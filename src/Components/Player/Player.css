@@ -1,0 +1,10 @@
+.player {
+    display: flex;
+}
+
+.player img {
+    width: 300px;
+    height: 220px;
+    padding: 10px;
+}
+

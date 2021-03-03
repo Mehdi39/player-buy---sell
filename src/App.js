@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Cart from './Components/Cart/Cart';
+import Player from './Components/Player/Player';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
+
+  const [players, setPlayers] = useState([]);
+  const [cart, setCart] = useState([])
+
+  useEffect(() => {
+    fetch('https://api.mocki.io/v1/715bc63b')
+      .then(resp => resp.json())
+      .then(data => setPlayers(data))
+      .catch(error => console.log(error))
+  }, []);
+
+  const handleSelectBtn = (players) => {
+    const newCart = [...cart, players];
+    setCart(newCart);
+  };
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container app-container">
+      <div className="player-container">
+        {
+          players.map(player => <Player playersInfo={player} handleSelectBtn={handleSelectBtn}></Player>)
+        }
+      </div>
+      <div className="cart-container">
+          <h1>Player Added: {cart.length}</h1>
+          <Cart cart={cart}></Cart>
+      </div>
     </div>
   );
 }
